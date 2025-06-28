@@ -1,0 +1,108 @@
+package com.guvi.task2;
+
+import java.util.Scanner;
+
+// Task: Create an Account class with balance as a data member,
+// with two constructors (default and parameterized),
+// and include deposit, withdraw, and display balance methods.
+
+public class Account {
+
+    // Data Members
+    double  balance = 0;          // Holds account balance
+    String  Acc_no;               // Account number
+    String  action;               // Action to perform (withdraw/deposit/displaybalance)
+    double  amount;               // Amount to deposit or withdraw
+
+    // Default Constructor
+    public Account() {
+    }
+
+    // Parameterized Constructor
+    public Account(String Acc_no, double amount, String action) {
+        this.Acc_no  = Acc_no;
+        this.amount  = amount;
+        this.action  = action;
+    }
+
+    // Deposit Method
+    public void deposit() {
+        if (amount <= 0) {
+            System.out.println(" Enter a valid amount to deposit.");
+        } else {
+            balance += amount;
+            System.out.println(" Amount deposited successfully.");
+        }
+    }
+
+    // Withdraw Method
+    public void withdraw() {
+        if (amount <= 0) {
+            System.out.println(" Enter a valid amount to withdraw.");
+        } else if (balance < amount) {
+            System.out.println(" Insufficient balance.");
+        } else {
+            balance -= amount;
+            System.out.println(" Amount withdrawn successfully.");
+        }
+    }
+
+    // Display Balance Method
+    public void displayBalance() {
+        System.out.println(" Current Balance: ₹" + balance);
+    }
+
+    // Transaction Logic
+    public static void doTransaction(Account acc) {
+        if (acc.action.equals("deposit")) {
+            acc.deposit();
+            acc.displayBalance();
+        } else if (acc.action.equals("withdraw")) {
+            acc.withdraw();
+            acc.displayBalance();
+        } else {
+            System.out.println(" Invalid action.");
+        }
+    }
+
+    // Starts Account Operations
+    public static void doStart(Account acc, Scanner sc) {
+        System.out.println(" Enter the Account Number:");
+        acc.Acc_no = sc.nextLine(); // 2 Dummy: iob5567890123
+
+        System.out.println(" Choose Action (withdraw / deposit / displaybalance):");
+        acc.action = sc.nextLine().toLowerCase(); // 6 withdrawal
+
+        if (acc.action.equals("displaybalance")) {
+            acc.displayBalance();
+        } else {
+            System.out.println(" Enter the Amount:");
+            acc.amount = sc.nextDouble(); // 7: e.g., 500
+            sc.nextLine(); // Consume newline
+            doTransaction(acc);          // Balance gets updated
+        }
+    }
+
+    // Main Method
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Account acc = new Account();
+
+        System.out.println("Welcome, Account Holder!");
+
+        while (true) {
+            System.out.println(" Do you want to proceed? (yes / no)");
+            String accept = sc.nextLine().toLowerCase(); // 4 yes
+
+            if (accept.equals("yes")) {
+                doStart(acc, sc);
+            } else if (accept.equals("no")) {
+                System.out.println("Thank you! Visit again.");
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter only 'yes' or 'no'.");
+            }
+        }
+    }
+}
+
